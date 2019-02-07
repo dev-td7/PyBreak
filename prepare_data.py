@@ -62,11 +62,11 @@ def dump_data():
 
     print(' '*50+'\rSaving data..', end='\r')
     dump = [question_to_id_mapping, ans_id_mappings, sentence_tokens]
-    pickle.dump(dump, open('data.pickle', 'wb'), protocol=-1)
+    pickle.dump(dump, open('data/data.pickle', 'wb'), protocol=-1)
     del question_to_id_mapping
     del ans_id_mappings
 
-    pickle.dump(id_to_question_mapping, open('mapping.pickle', 'wb'), protocol=-1)
+    pickle.dump(id_to_question_mapping, open('data/mapping.pickle', 'wb'), protocol=-1)
     del id_to_question_mapping
 
 def dump_model():
@@ -75,7 +75,7 @@ def dump_model():
 
     print(' '*50+'\rSaving model..', end='\r')
     dump = [tfidf_vectorizer, tfidf_values]
-    pickle.dump(dump, open('model.pickle', 'wb'), protocol=-1)
+    pickle.dump(dump, open('data/model.pickle', 'wb'), protocol=-1)
 
 if __name__ == "__main__":
     import nltk
