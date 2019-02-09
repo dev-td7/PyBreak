@@ -4,6 +4,8 @@ This is a simple tool for Python 3 which gets you instant help from StackOverflo
 
 When you get an exception, it will automatically recommend you relevant questions and their answers to help solve your problem. 
 
+![How it works](https://github.com/dev-td7/PyStuck/raw/master/images/working.png "StackOverflow right in your terminal")
+
 ## Easy to Use
 
 There are not many requirements for this tool.
@@ -57,3 +59,5 @@ Whenever your program raises an exception, PyStuck will catch it and do it's mag
 ## Credits
 
 [StackOverflow's Python dataset from Kaggle](https://www.kaggle.com/stackoverflow/pythonquestions/home)
+
+[StackOverflow.com](https://stackoverflow.com)
