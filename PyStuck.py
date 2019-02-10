@@ -5,13 +5,6 @@ TfIdfVector, tfidf_values = [], []
 
 DEFAULT_ANSWER = "No Answers found"
 
-def lemma_normalize(text):
-    def lemmatize_tokens(lemmatizer, tokens):
-        return [lemmatizer.lemmatize(token) for token in tokens]
-
-    global punctuation_dictionary, lemmatizer
-    return lemmatize_tokens(lemmatizer, nltk.word_tokenize(text.lower().translate(punctuation_dictionary)))
-
 def compute_similarity(query):
     global sentence_tokens, DEFAULT_ANSWER
     global TfIdfVector, tfidf_values
@@ -58,6 +51,16 @@ def read_data():
     id_to_question_mapping = pickle.load(open('data/mapping.pickle', 'rb'))
     TfIdfVector, tfidf_values = pickle.load(open('data/model.pickle', 'rb'))
 
+    for question_id in id_to_question_mapping.keys():
+        if question_id not in ans_id_mappings:
+            continue
+        for i, answer1 in enumerate(ans_id_mappings[question_id]):
+            for j, answer2 in enumerate(ans_id_mappings[question_id]):
+                if answer1['score'] < answer2['score']:
+                    temp = ans_id_mappings[question_id][i]
+                    ans_id_mappings[question_id][i] = ans_id_mappings[question_id][j]
+                    ans_id_mappings[question_id][j] = temp
+
 def beautify_print(matches):
     global id_to_question_mapping
     import html2text
@@ -68,44 +71,34 @@ def beautify_print(matches):
         if question_id not in ans_id_mappings:
             continue
         
-        print('-'*60)
-        print('Question title: ', end='')
-        print(question['title'] + '\nDescription: \n' + html2text.html2text(question['body']))
+        print('#' * 80)
+        print('Question title: ' + question['title'])
+        print('#' * 80)
+        print('\nDescription: \n' + html2text.html2text(question['body'])); print('-' * 80)
 
         for i, answer in enumerate(ans_id_mappings[question_id]):
             print('Answer ' + str(i+1) + ':', end='\n\n')
             print(html2text.html2text(answer['body']))
-            print()
-
-        print('-'*60)
+            print('-' * 80)
 
 def PyStuck(your_code):
-    exception = False
-    try:
-        your_code()
-    except Exception as err:
-        import traceback, sys
+    def PyStuck_internal(*args, **kwargs):
+        try:
+            return your_code(*args, **kwargs)
+        except Exception as err:
+            import traceback, sys
 
-        traceback.print_exc(file=sys.stderr)
-        exception = str(err)
+            traceback.print_exc(file=sys.stderr)
+            exception = str(err)
 
-        if input('Get help from stackoverflow? [y/n]: ').lower() == 'y':
-            print('-'*60, end='\n')
-            read_data()
-            matches = get_answers(exception)
-            print("Here's some content from StackOverflow")
-            print('-'*60, end='\n\n')
+            if input('\n[PyStuck] Get help from stackoverflow? [y/n]: ').lower() == 'y':
+                print('-' * 80, end='\n')
+                read_data()
+                matches = get_answers(exception)
+                print("Here's some content from StackOverflow")
+                print('-' * 80, end='\n\n')
 
-            for question_id in id_to_question_mapping.keys():
-                if question_id not in ans_id_mappings:
-                    continue
-                for i, answer1 in enumerate(ans_id_mappings[question_id]):
-                    for j, answer2 in enumerate(ans_id_mappings[question_id]):
-                        if answer1['score'] < answer2['score']:
-                            temp = ans_id_mappings[question_id][i]
-                            ans_id_mappings[question_id][i] = ans_id_mappings[question_id][j]
-                            ans_id_mappings[question_id][j] = temp
-
-            beautify_print(matches)
-        else:
-            print('Good luck with your error!')
+                beautify_print(matches)
+            else:
+                print('Good luck with your error!')
+    return PyStuck_internal
