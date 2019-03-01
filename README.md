@@ -17,6 +17,8 @@ pandas==0.23.0
 nltk==3.4
 ```
 
+Works best on Ubuntu. On Windows, this may cause MemoryError while saving data using Pickle. 
+
 __Step 0__: Installation
 ___
 

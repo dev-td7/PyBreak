@@ -74,7 +74,7 @@ def prepare_tfidf_vector():
 
 def dump_data(data_to_dump, file_name):
     import pickle
-    pickle.dump(data_to_dump, open('data/'+file_name+'.pickle', 'wb'), protocol=-1)
+    pickle.dump(data_to_dump, open('data/'+file_name+'.pickle', 'wb+'), protocol=-1)
 
 if __name__ == "__main__":
     import nltk, time
