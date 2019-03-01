@@ -3,7 +3,7 @@ import string, nltk
 question_to_id_mapping, id_to_question_mapping, ans_id_mappings = {}, {}, {}
 TfIdfVector, tfidf_values = [], []
 
-DEFAULT_ANSWER = "No Answers found"
+DEFAULT_ANSWER = "I am sorry! I couldn't find answers for your problem. My knowledge is limited"
 
 def compute_similarity(query):
     global sentence_tokens, DEFAULT_ANSWER
@@ -26,7 +26,7 @@ def compute_similarity(query):
 def get_answers(query):
     global question_to_id_mapping, ans_id_mappings
 
-    print('Almost done...', end='\r')
+    print(' ' * 40 + '\rAlmost done! Just arranging content for you...', end='\r')
     questions = compute_similarity(query)
     if questions == DEFAULT_ANSWER:
         return DEFAULT_ANSWER
@@ -46,9 +46,9 @@ def read_data():
     global TfIdfVector, tfidf_values
     import pickle
 
-    print('Hold on...', end='\r')
-    question_to_id_mapping, ans_id_mappings, sentence_tokens = pickle.load(open('data/data.pickle', 'rb'))
-    id_to_question_mapping = pickle.load(open('data/mapping.pickle', 'rb'))
+    print("Please wait while I am thinking...", end='\r')
+    question_to_id_mapping, id_to_question_mapping = pickle.load(open('data/question_data.pickle', 'rb'))
+    ans_id_mappings, sentence_tokens = pickle.load(open('data/answer_data.pickle', 'rb'))
     TfIdfVector, tfidf_values = pickle.load(open('data/model.pickle', 'rb'))
 
     for question_id in id_to_question_mapping.keys():
@@ -74,15 +74,16 @@ def beautify_print(matches):
         print('#' * 80)
         print('Question title: ' + question['title'])
         print('#' * 80)
+        print('Author: User #' + question['author'])
         print('\nDescription: \n' + html2text.html2text(question['body'])); print('-' * 80)
 
         for i, answer in enumerate(ans_id_mappings[question_id]):
-            print('Answer ' + str(i+1) + ':', end='\n\n')
+            print('[Answer ' + str(i+1) + '] by User #' + answer['author'] + ':', end='\n\n')
             print(html2text.html2text(answer['body']))
             print('-' * 80)
 
-def PyStuck(your_code):
-    def PyStuck_internal(*args, **kwargs):
+def PyBreak(your_code):
+    def PyBreak_internal(*args, **kwargs):
         try:
             return your_code(*args, **kwargs)
         except Exception as err:
@@ -91,14 +92,14 @@ def PyStuck(your_code):
             traceback.print_exc(file=sys.stderr)
             exception = str(err)
 
-            if input('\n[PyStuck] Get help from stackoverflow? [y/n]: ').lower() == 'y':
+            if input('\n[PyBreak] Get help from stackoverflow? [y/n]: ').lower() == 'y':
                 print('-' * 80, end='\n')
                 read_data()
                 matches = get_answers(exception)
-                print("Here's some content from StackOverflow")
+                print(" " * 40 + "\rHere's some content from StackOverflow")
                 print('-' * 80, end='\n\n')
 
                 beautify_print(matches)
             else:
                 print('Good luck with your error!')
-    return PyStuck_internal
+    return PyBreak_internal
