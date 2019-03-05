@@ -79,6 +79,7 @@ def dump_data(data_to_dump, file_name):
 if __name__ == "__main__":
     import nltk, time
 
+    nltk.download("punkt")
     print('[Preprocessing data. The whole process may take upto 5 minutes to finish. But its for the best and will save time later]', end='\n\n')
         
     start = time.time()

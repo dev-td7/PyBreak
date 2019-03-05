@@ -22,7 +22,8 @@ Works best on Ubuntu. On Windows, this may cause MemoryError while saving data u
 __Step 0__: Installation
 ___
 
-* Download _Questions.csv_ and _Answers.csv_ files from [My GitLab repository](https://gitlab.com/td7/pybreak/tree/master/data)
+* Run `pip3 install -r requirements.txt` in the terminal.
+* Run download.sh. It downloads csv files from [My GitLab repository](https://gitlab.com/td7/pybreak/tree/master/data)
 * Clone this repository and add the above .csv files into the repository folder (Recommended). Or you can directly download model files from my GitLab (Not recommended).
 * Run prepare_data.py to create data files. The size of these files is large and thus, not included with this repository.
 
